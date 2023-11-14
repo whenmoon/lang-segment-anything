@@ -64,11 +64,12 @@ def draw_image(image, masks, boxes, labels, alpha=1):
         image = draw_segmentation_masks(image, masks=masks, colors=['white'] * len(masks), alpha=alpha)
     return image.numpy().transpose(1, 2, 0)
 
-heic_img = HEIC2PNG('./IMG_4313.heic', quality=70)  # Specify the quality of the converted image
-heic_img.save()  # The converted image will be saved as `test.png`
+
+heic_img = HEIC2PNG('/Users/tombelton/Desktop/code/interior-api/src/assets/IMG_4313.heic', quality=70)  # Specify the quality of the converted image
+heic_img.save('/Users/tombelton/Desktop/code/interior-api/src/assets/IMG_4313.png')
 
 model = LangSAM()
-image_pil = Image.open("./IMG_4313.png").convert("RGB")
+image_pil = Image.open("/Users/tombelton/Desktop/code/interior-api/src/assets/IMG_4313.png").convert("RGB")
 text_prompt = "beanbag"
 masks, boxes, phrases, logits = model.predict(image_pil, text_prompt)
 
@@ -88,4 +89,5 @@ for item in chosen_mask.getdata():
 
 img = Image.new(mode="RGBA", size=chosen_mask.size)
 img.putdata(tmp)
-img.save("final_mask.png", "PNG")
+img.save("/Users/tombelton/Desktop/code/interior-api/src/assets/FINAL_MASK.png")
+img.show()
