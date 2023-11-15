@@ -54,6 +54,8 @@ from PIL import Image
 from torchvision.utils import draw_bounding_boxes
 from torchvision.utils import draw_segmentation_masks
 import os
+import sys
+
 os.environ['CURL_CA_BUNDLE'] = ''
 
 def draw_image(image, masks, boxes, labels, alpha=1):
@@ -64,13 +66,15 @@ def draw_image(image, masks, boxes, labels, alpha=1):
         image = draw_segmentation_masks(image, masks=masks, colors=['white'] * len(masks), alpha=alpha)
     return image.numpy().transpose(1, 2, 0)
 
+serverImageUploadPath = sys.argv[1]
+target = sys.argv[2]
 
-heic_img = HEIC2PNG('/Users/tombelton/Desktop/code/interior-api/src/assets/IMG_4313.heic', quality=70)  # Specify the quality of the converted image
-heic_img.save('/Users/tombelton/Desktop/code/interior-api/src/assets/IMG_4313.png')
+heic_img = HEIC2PNG(serverImageUploadPath + '.heic', quality=70)  # Specify the quality of the converted image
+heic_img.save(serverImageUploadPath + '.png')
 
 model = LangSAM()
-image_pil = Image.open("/Users/tombelton/Desktop/code/interior-api/src/assets/IMG_4313.png").convert("RGB")
-text_prompt = "beanbag"
+image_pil = Image.open(serverImageUploadPath + '.png').convert("RGB")
+text_prompt = target
 masks, boxes, phrases, logits = model.predict(image_pil, text_prompt)
 
 mask_im = Image.new('RGB', size=(image_pil.size))
@@ -89,5 +93,5 @@ for item in chosen_mask.getdata():
 
 img = Image.new(mode="RGBA", size=chosen_mask.size)
 img.putdata(tmp)
-img.save("/Users/tombelton/Desktop/code/interior-api/src/assets/FINAL_MASK.png")
+img.save(serverImageUploadPath + "-FINAL_MASK.png")
 img.show()
