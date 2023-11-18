@@ -68,8 +68,9 @@ def draw_image(image, masks, boxes, labels, alpha=1):
 
 serverImageUploadPath = sys.argv[1]
 target = sys.argv[2]
+MASK_FILE_NAME_POSTFIX = sys.argv[3]
 
-heic_img = HEIC2PNG(serverImageUploadPath + '.heic', quality=70)  # Specify the quality of the converted image
+heic_img = HEIC2PNG(serverImageUploadPath + '.heic', quality=50)  # Specify the quality of the converted image
 heic_img.save(serverImageUploadPath + '.png')
 
 model = LangSAM()
@@ -93,5 +94,5 @@ for item in chosen_mask.getdata():
 
 img = Image.new(mode="RGBA", size=chosen_mask.size)
 img.putdata(tmp)
-img.save(serverImageUploadPath + "-FINAL_MASK.png")
-img.show()
+mask_path = serverImageUploadPath + MASK_FILE_NAME_POSTFIX
+img.convert("RGBA").save(mask_path)
