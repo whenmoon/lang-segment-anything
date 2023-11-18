@@ -70,8 +70,8 @@ serverImageUploadPath = sys.argv[1]
 target = sys.argv[2]
 MASK_FILE_NAME_POSTFIX = sys.argv[3]
 
-heic_img = HEIC2PNG(serverImageUploadPath + '.heic', quality=50)  # Specify the quality of the converted image
-heic_img.save(serverImageUploadPath + '.png')
+#heic_img = HEIC2PNG(serverImageUploadPath + '.heic', quality=50)  # Specify the quality of the converted image
+#heic_img.save(serverImageUploadPath + '.png')
 
 model = LangSAM()
 image_pil = Image.open(serverImageUploadPath + '.png').convert("RGB")
@@ -95,4 +95,4 @@ for item in chosen_mask.getdata():
 img = Image.new(mode="RGBA", size=chosen_mask.size)
 img.putdata(tmp)
 mask_path = serverImageUploadPath + MASK_FILE_NAME_POSTFIX
-img.convert("RGBA").save(mask_path)
+img.save(mask_path)
