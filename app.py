@@ -73,6 +73,15 @@ MASK_FILE_NAME_POSTFIX = sys.argv[3]
 #heic_img = HEIC2PNG(serverImageUploadPath + '.heic', quality=50)  # Specify the quality of the converted image
 #heic_img.save(serverImageUploadPath + '.png')
 
+# Open the paletted image
+imageRGB = Image.open(serverImageUploadPath + '.png')
+
+# Convert to RGB
+rgb_image = imageRGB.convert('RGB')
+
+# Save the new image
+rgb_image.save(serverImageUploadPath + '.png')
+
 model = LangSAM()
 image_pil = Image.open(serverImageUploadPath + '.png').convert("RGB")
 text_prompt = target
